@@ -30,6 +30,14 @@ class Message:
         },
     }
 
+    basePhoto = {
+        "photo": {
+            "url": "https://www.python.org/static/img/python-logo.png",
+            "width": 640,
+            "height": 480,
+        },
+    }
+
     def __init__(self):
         self.returnedMessage = None
 
@@ -64,17 +72,67 @@ class BaseMessage(Message):
         super().__init__()
         self.returnedMessage = Message.baseMessage
 
-    def convert_to_message_button(self, label, url):
+    def remove_keyboard(self):
         """
-        반환될 메시지에 메시지버튼을 추가합니다.
-
-        :param str label: 메시지버튼에 안내되는 메시지
-        :param str url: 메시지버튼을 누르면 이동할 URL
+        반환될 메시지에서 키보드를 삭제합니다.
 
         예제:
             다음과 같이 사용하세요:
             >>> a = BaseMessage()
-            >>> a.convert_to_message_button("파이썬", "https://www.python.org")
+            >>> a.remove_keyboard()
+            >>> a.get_message()
+            {
+                "message": {
+                    "text": "기본 메시지"
+                }
+            }
+        """
+        if "keyboard" in self.returnedMessage:
+            del self.returnedMessage["keyboard"]
+
+    def add_photo(self, url, width, height):
+        """
+        반환될 메시지에 사진을 추가합니다.
+
+        :param str url: 사진이 위치해 있는 URL
+        :param int width: 사진의 가로 길이
+        :param int height: 사진의 세로 길이
+
+        예제:
+            다음과 같이 사용하세요:
+            >>> a = BaseMessage()
+            >>> url = "https://www.python.org/static/img/python-logo.png"
+            >>> a.add_photo(url, 400, 400)
+            >>> a.get_message()
+            {
+                "message": {
+                    "text": "기본 메시지",
+                    "photo": {
+                        "url": "https://www.python.org/static/img/python-logo.png",
+                        "width": 400,
+                        "height": 400,
+                    }
+                },
+                "keyboard": 생략
+            }
+        """
+        messagePhoto = Message.basePhoto
+        messagePhoto["url"] = url
+        messagePhoto["width"] = width
+        messagePhoto["height"] = height
+        self.returnedMessage["message"].update(messagePhoto)
+
+    def add_message_button(self, url, label):
+        """
+        반환될 메시지에 메시지버튼을 추가합니다.
+
+        :param str url: 메시지버튼을 누르면 이동할 URL
+        :param str label: 메시지버튼에 안내되는 메시지
+
+        예제:
+            다음과 같이 사용하세요:
+            >>> a = BaseMessage()
+            >>> a.add_message_button("https://www.python.org", "파이썬")
             >>> a.get_message()
             {
                 "message": {

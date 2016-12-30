@@ -13,31 +13,45 @@ class Singleton(type):
 
 
 class APIManager(metaclass=Singleton):
-    def process(self, mode, data=None):
-        if mode is "home":
-            message = MessageAdmin.get_home_message()
-            return message
-        elif mode is "message":
-            user_key = data["user_key"]
-            request_type = data["type"]
-            content = data["content"]
-            message = MessageAdmin.get_base_message()
-            return message
-        elif mode is "add":
-            user_key = data["user_key"]
-            message = MessageAdmin.get_success_message()
-            return message
-        elif mode is "block":
-            user_key = data
-            message = MessageAdmin.get_success_message()
-            return message
-        elif mode is "exit":
-            user_key = data
-            message = MessageAdmin.get_success_message()
-            return message
-        elif mode is "fail":
-            message = MessageAdmin.get_fail_message()
-            return message
+    def process(self, mode, *args):
+        options = {
+            "home": self.return_home_keyboard,
+            "message": self.handle_message,
+            "add": self.add_friend,
+            "block": self.block_friend,
+            "exit": self.exit_chatroom,
+            "fail": self.handle_fail,
+        }
+        return options.get(mode, self.handle_fail)(*args)
+
+    def return_home_keyboard(self):
+        message = MessageHandler.get_home_message()
+        return message
+
+    def handle_message(self, data):
+        userKey = data["user_key"]
+        requestType = data["type"]
+        content = data["content"]
+
+        message = MessageHandler.get_base_message()
+        return message
+
+    def add_friend(self, data):
+        userKey = data["user_key"]
+        message = MessageHandler.get_success_message()
+        return message
+
+    def block_friend(self, userKey):
+        message = MessageHandler.get_success_message()
+        return message
+
+    def exit_chatroom(self, userKey):
+        message = MessageHandler.get_success_message()
+        return message
+
+    def handle_fail(self):
+        message = MessageHandler.get_fail_message()
+        return message
 
 
 class MessageManager(metaclass=Singleton):
@@ -73,6 +87,6 @@ class DBManager(metaclass=Singleton):
     def commit(self):
         db.session.commit()
 
-APIAdmin = APIManager()
-MessageAdmin = MessageManager()
-DBAdmin = DBManager()
+APIHandler = APIManager()
+MessageHandler = MessageManager()
+DBHandler = DBManager()

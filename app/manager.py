@@ -1,6 +1,7 @@
 from app import db
 from .message import BaseMessage, HomeMessage, SuccessMessage, FailMessage
 from .model import User
+from .keyboard import Keyboard
 
 
 class Singleton(type):
@@ -29,23 +30,23 @@ class APIManager(metaclass=Singleton):
         return message
 
     def handle_message(self, data):
-        userKey = data["user_key"]
-        requestType = data["type"]
+        user_key = data["user_key"]
+        request_type = data["type"]
         content = data["content"]
 
         message = MessageHandler.get_base_message()
         return message
 
     def add_friend(self, data):
-        userKey = data["user_key"]
+        user_key = data["user_key"]
         message = MessageHandler.get_success_message()
         return message
 
-    def block_friend(self, userKey):
+    def block_friend(self, user_key):
         message = MessageHandler.get_success_message()
         return message
 
-    def exit_chatroom(self, userKey):
+    def exit_chatroom(self, user_key):
         message = MessageHandler.get_success_message()
         return message
 
@@ -56,20 +57,20 @@ class APIManager(metaclass=Singleton):
 
 class MessageManager(metaclass=Singleton):
     def get_base_message(self):
-        baseMessage = BaseMessage().get_message()
-        return baseMessage
+        base_message = BaseMessage().get_message()
+        return base_message
 
     def get_home_message(self):
-        homeMessage = HomeMessage().get_message()
-        return homeMessage
+        home_message = HomeMessage().get_message()
+        return home_message
 
     def get_fail_message(self):
-        failMessage = FailMessage().get_message()
-        return failMessage
+        fail_message = FailMessage().get_message()
+        return fail_message
 
     def get_success_message(self):
-        successMessage = SuccessMessage().get_message()
-        return successMessage
+        success_message = SuccessMessage().get_message()
+        return success_message
 
 
 class DBManager(metaclass=Singleton):

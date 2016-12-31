@@ -7,30 +7,30 @@ class Message:
     별도의 수정은 필요하지 않습니다.
     본 클래스에 포함되어 있는 dict타입의 변수들은 조합을 위한 조각과 틀입니다.
 
-    :param dict baseKeyboard: 키보드
-    :param dict baseMessage: 키보드를 포함한 기본 메시지
-    :param dict baseMessageButton: 메시지에 덧붙여질 메시지버튼
+    :param dict base_keyboard: 키보드
+    :param dict base_message: 키보드를 포함한 기본 메시지
+    :param dict base_message_button: 메시지에 덧붙여질 메시지버튼
     """
-    baseKeyboard = {
+    base_keyboard = {
         "type": "buttons",
-        "buttons": Keyboard.homeButtons,
+        "buttons": Keyboard.home_buttons,
     }
 
-    baseMessage = {
+    base_message = {
         "message": {
             "text": "기본 메시지",
         },
-        "keyboard": baseKeyboard,
+        "keyboard": base_keyboard,
     }
 
-    baseMessageButton = {
+    base_message_button = {
         "message_button": {
             "label": "버튼에 들어갈 메시지",
             "url": "https://www.python.org",
         },
     }
 
-    basePhoto = {
+    base_photo = {
         "photo": {
             "url": "https://www.python.org/static/img/python-logo.png",
             "width": 640,
@@ -39,11 +39,11 @@ class Message:
     }
 
     def __init__(self):
-        self.returnedMessage = None
+        self.returned_message = None
 
     def get_message(self):
         """
-        인스턴스 변수인 returnedMessage를 반환합니다.
+        인스턴스 변수인 returned_message 반환합니다.
         예제:
             다음과 같이 사용하세요:
             >>> a = BaseMessage()
@@ -64,13 +64,13 @@ class Message:
 
         :returns dict: 반환될 메시지
         """
-        return self.returnedMessage
+        return self.returned_message
 
 
 class BaseMessage(Message):
     def __init__(self):
         super().__init__()
-        self.returnedMessage = Message.baseMessage
+        self.returned_message = Message.base_message
 
     def remove_keyboard(self):
         """
@@ -87,8 +87,8 @@ class BaseMessage(Message):
                 }
             }
         """
-        if "keyboard" in self.returnedMessage:
-            del self.returnedMessage["keyboard"]
+        if "keyboard" in self.returned_message:
+            del self.returned_message["keyboard"]
 
     def add_photo(self, url, width, height):
         """
@@ -116,11 +116,11 @@ class BaseMessage(Message):
                 "keyboard": 생략
             }
         """
-        messagePhoto = Message.basePhoto
-        messagePhoto["url"] = url
-        messagePhoto["width"] = width
-        messagePhoto["height"] = height
-        self.returnedMessage["message"].update(messagePhoto)
+        photo_message = Message.base_photo
+        photo_message["url"] = url
+        photo_message["width"] = width
+        photo_message["height"] = height
+        self.returned_message["message"].update(photo_message)
 
     def add_message_button(self, url, label):
         """
@@ -145,10 +145,10 @@ class BaseMessage(Message):
                 "keyboard": 생략
             }
         """
-        messageButton = Message.baseMessageButton
-        messageButton["label"] = label
-        messageButton["url"] = url
-        self.returnedMessage["message"].update(messageButton)
+        button_message = Message.base_message_button
+        button_message["label"] = label
+        button_message["url"] = url
+        self.returned_message["message"].update(button_message)
 
     def update_message(self, message):
         """
@@ -169,7 +169,7 @@ class BaseMessage(Message):
                 "keyboard": 생략
             }
         """
-        self.returnedMessage["message"]["text"] = message
+        self.returned_message["message"]["text"] = message
 
     def update_keyboard(self, keyboard):
         """
@@ -194,27 +194,27 @@ class BaseMessage(Message):
                 ]
             }
         """
-        _keyboard = Message.baseKeyboard
+        _keyboard = Message.base_keyboard
         _keyboard["buttons"] = keyboard
-        self.returnedMessage["keyboard"] = _keyboard
+        self.returned_message["keyboard"] = _keyboard
 
 
 class HomeMessage(Message):
     def __init__(self):
         super().__init__()
-        self.returnedMessage = Message.baseKeyboard
-        homeKeyboard = Keyboard.homeButtons
-        self.returnedMessage["buttons"] = homeKeyboard
+        self.returned_message = Message.base_keyboard
+        home_keyboard = Keyboard.home_buttons
+        self.returned_message["buttons"] = home_keyboard
 
 
 class FailMessage(BaseMessage):
     def __init__(self):
         super().__init__()
-        self.updateMessage("오류가 발생하였습니다.")
-        self.updateKeyboard(Keyboard.homeButtons)
+        self.update_message("오류가 발생하였습니다.")
+        self.update_keyboard(Keyboard.home_buttons)
 
 
 class SuccessMessage(Message):
     def __init__(self):
         super().__init__()
-        self.returnedMessage = "SUCCESS"
+        self.returned_message = "SUCCESS"

@@ -1,4 +1,13 @@
 from .keyboard import Keyboard
+from ujson import dumps, loads
+
+
+class classproperty(object):
+    def __init__(self, getter):
+        self.getter = getter
+
+    def __get__(self, instance, owner):
+        return self.getter(owner)
 
 
 class Message:
@@ -11,26 +20,23 @@ class Message:
     :param dict base_message: 키보드를 포함한 기본 메시지
     :param dict base_message_button: 메시지에 덧붙여질 메시지버튼
     """
-    base_keyboard = {
+    _base_keyboard = {
         "type": "buttons",
         "buttons": Keyboard.home_buttons,
     }
-
-    base_message = {
+    _base_message = {
         "message": {
             "text": "기본 메시지",
         },
-        "keyboard": base_keyboard,
+        "keyboard": _base_keyboard,
     }
-
-    base_message_button = {
+    _base_message_button = {
         "message_button": {
             "label": "버튼에 들어갈 메시지",
             "url": "https://www.python.org",
         },
     }
-
-    base_photo = {
+    _base_photo = {
         "photo": {
             "url": "https://www.python.org/static/img/python-logo.png",
             "width": 640,
@@ -40,6 +46,22 @@ class Message:
 
     def __init__(self):
         self.returned_message = None
+
+    @classproperty
+    def base_keyboard(cls):
+        return loads(dumps(cls._base_keyboard))
+
+    @classproperty
+    def base_message(cls):
+        return loads(dumps(cls._base_message))
+
+    @classproperty
+    def base_message_button(cls):
+        return loads(dumps(cls._base_message_button))
+
+    @classproperty
+    def base_photo(cls):
+        return loads(dumps(cls._base_photo))
 
     def get_message(self):
         """
@@ -68,6 +90,10 @@ class Message:
 
 
 class BaseMessage(Message):
+    """
+    커스텀 메시지를 구현할 수 있는 클래스입니다.
+    BaseMessage만 활용해도 되고 FailMessage처럼 상속받아 활용할 수도 있습니다.
+    """
     def __init__(self):
         super().__init__()
         self.returned_message = Message.base_message
@@ -176,7 +202,7 @@ class BaseMessage(Message):
         반환될 메시지의 키보드를 업데이트합니다.
         기본 동작은 덮어쓰기입니다.
 
-        :param str keyboard: 반환될 메시지의 키보드
+        :param list keyboard: 반환될 메시지의 키보드
 
         예제:
             다음과 같이 사용하세요:
@@ -199,7 +225,21 @@ class BaseMessage(Message):
         self.returned_message["keyboard"] = _keyboard
 
 
+class FailMessage(BaseMessage):
+    """
+    처리 중 예외가 발생했을 때 반환되는 메시지입니다.
+    오류 메시지는 수정 가능하며 별도의 처리 로직을 추가하실 수 있습니다.
+    """
+    def __init__(self):
+        super().__init__()
+        self.update_message("오류가 발생하였습니다.")
+        self.update_keyboard(Keyboard.home_buttons)
+
+
 class HomeMessage(Message):
+    """
+    홈 메시지는 별도의 메시지가 없기에 Message를 상속받아 사용합니다.
+    """
     def __init__(self):
         super().__init__()
         self.returned_message = Message.base_keyboard
@@ -207,14 +247,10 @@ class HomeMessage(Message):
         self.returned_message["buttons"] = home_keyboard
 
 
-class FailMessage(BaseMessage):
-    def __init__(self):
-        super().__init__()
-        self.update_message("오류가 발생하였습니다.")
-        self.update_keyboard(Keyboard.home_buttons)
-
-
 class SuccessMessage(Message):
+    """
+    친구 추가, 차단, 채팅방 나가기가 발생했을 때 성공적으로 처리되면 반환되는 메시지입니다.
+    """
     def __init__(self):
         super().__init__()
         self.returned_message = "SUCCESS"

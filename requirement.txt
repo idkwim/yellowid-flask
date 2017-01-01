@@ -5,4 +5,5 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 SQLAlchemy==1.1.4
+ujson==1.35
 Werkzeug==0.11.12

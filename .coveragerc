@@ -1,3 +1,6 @@
 [run]
 source = app
-omit = test/test*
+
+[report]
+omit =
+  test/*

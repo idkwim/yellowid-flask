@@ -1,4 +1,8 @@
 # Yellowid-Flask
+
+[![Build Status](https://travis-ci.org/JungWinter/yellowid-flask.svg?branch=master)](https://travis-ci.org/JungWinter/yellowid-flask)
+[![codecov](https://codecov.io/gh/JungWinter/yellowid-flask/branch/master/graph/badge.svg)](https://codecov.io/gh/JungWinter/yellowid-flask)
+
 Skeleton of Kakaotalk Yellowid by Python Flask
 
 ## 1. 소개

@@ -253,4 +253,4 @@ class SuccessMessage(Message):
     """
     def __init__(self):
         super().__init__()
-        self.returned_message = "SUCCESS"
+        self.returned_message = {"message": "SUCCESS", "comment": "정상 응답"}

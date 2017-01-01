@@ -10,4 +10,4 @@ install:
 script:
   - pytest test/
 after_success:
-  - py.test --cov=app test/
+  - bash <(curl -s https://codecov.io/bash)

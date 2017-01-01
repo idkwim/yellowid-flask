@@ -41,9 +41,9 @@ Github GUI 등 다른 방법으로도 Clone하실 수 있습니다.
 ### 3. 가상환경 설정
 ```shell
 $ cd ~/yellowid-flask
-$ virtualenv venv
+$ virtualenv venv -p python3
+$ source ./venv/bin/activate
 ```
-이후 가상환경을 `activate` 합니다.
 
 ### 4. 의존성패키지 설치
 ```shell
@@ -52,8 +52,8 @@ $ virtualenv venv
 
 ### 5. 실행
 ```shell
-$ cd ~/yellowid-flask
-$ python run.py
+(venv) $ cd ~/yellowid-flask
+(venv) $ python run.py
 ```
 실행하면 `app/model.py` 에 정의된 DB테이블이 자동으로 생성됩니다.  
 기본으로 생성되는 위치는 `yellowid-flask/app/`이며 `dbname.db`로 생성됩니다.  

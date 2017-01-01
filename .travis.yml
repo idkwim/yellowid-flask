@@ -6,8 +6,8 @@ python:
   - "3.6"
 install:
   - pip install -r requirement.txt
-  - pip install pytest-cov
+  - pip install pytest-cov codecov
 script:
-  - pytest test/
+  - py.test --cov=app test/
 after_success:
   - bash <(curl -s https://codecov.io/bash)

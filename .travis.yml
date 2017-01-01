@@ -6,8 +6,8 @@ python:
   - "3.6"
 install:
   - pip install -r requirement.txt
-  - pip install codecov
+  - pip install pytest-cov
 script:
   - pytest test/
 after_success:
-  - codecov
+  - py.test --cov=app test/

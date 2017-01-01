@@ -55,6 +55,7 @@ def test_hello(test_client, session):
 
 def test_add_user(session):
     user = model.User(user_key="test_id")
+    assert repr(user) == "<User %r>" % ("test_id")
     session.add(user)
     session.commit()
     assert user.id > 0

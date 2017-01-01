@@ -1,5 +1,5 @@
 import app as main
-from app import model
+from app import model, message
 from flask.testing import FlaskClient
 from flask import json
 from os import path

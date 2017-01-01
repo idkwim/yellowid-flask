@@ -143,9 +143,9 @@ class BaseMessage(Message):
             }
         """
         photo_message = Message.base_photo
-        photo_message["url"] = url
-        photo_message["width"] = width
-        photo_message["height"] = height
+        photo_message["photo"]["url"] = url
+        photo_message["photo"]["width"] = width
+        photo_message["photo"]["height"] = height
         self.returned_message["message"].update(photo_message)
 
     def add_message_button(self, url, label):
@@ -172,8 +172,8 @@ class BaseMessage(Message):
             }
         """
         button_message = Message.base_message_button
-        button_message["label"] = label
-        button_message["url"] = url
+        button_message["message_button"]["label"] = label
+        button_message["message_button"]["url"] = url
         self.returned_message["message"].update(button_message)
 
     def update_message(self, message):
@@ -213,11 +213,14 @@ class BaseMessage(Message):
                 "message": {
                     "text": "기본 메시지"
                 },
-                "keyboard": [
-                    "파이썬",
-                    "루비",
-                    "아희"
-                ]
+                "keyboard": {
+                    "type": "buttons",
+                    "buttons": [
+                        "파이썬",
+                        "루비",
+                        "아희"
+                    ]
+                }
             }
         """
         _keyboard = Message.base_keyboard
